@@ -15,7 +15,7 @@ app.use(express.static('public'))
 
 //Routes
 app.get("/", function(req, res) {
-    console.log('Get Route')
+    // console.log('Get Route')
     res.sendFile(path.join(__dirname, "./public/index.html"));
   });
 
@@ -33,6 +33,22 @@ app.get("/notes", function(req, res) {
             res.json(notesDB)
         })    
     });
+ 
+    app.post("/api/notes", function(req,res) {
+        fs.readFile('db/db.json', 'utf8', function (err, data) {
+            var string = JSON.stringify(data)
+             var makeArray = JSON.parse(string)
+             var notesDB = JSON.parse(makeArray)
+    
+
+             req.body.id = notesDB.length + 1
+             var newDB = notesDB.concat(req.body)
+    
+         fs.writeFile('db/db.json',JSON.stringify(newDB), function (err) {
+             res.json(newDB);
+         });
+        });
+     });
 // // Create a function for handling the requests and responses coming into our server
 // function handleRequest(req, res) {
 
