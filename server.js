@@ -49,6 +49,28 @@ app.get("/notes", function(req, res) {
          });
         });
      });
+
+//Delete dunction selecting the 
+app.delete('/api/notes/:id', function (req, res) {
+
+    var deleteNote = req.params.id
+    // console.log(deleteNote)
+  
+    fs.readFile("db/db.json", "utf8", function (err, data) {
+        
+        if (err) throw err
+  
+        var note = JSON.parse(data)
+        var index = parseInt(deleteNote) - 1
+        note.splice(index, 1);
+  
+        fs.writeFile('db/db.json', JSON.stringify(note), 'utf8', function (err) {
+        if (err) throw err
+        // console.log('deletedone2')
+        })
+    })
+    res.send(deleteNote)
+  })
 // // Create a function for handling the requests and responses coming into our server
 // function handleRequest(req, res) {
 
